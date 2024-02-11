@@ -1,6 +1,6 @@
 namespace devshop.api.Books;
 
-public sealed record BooksRequest(
+public sealed record BooksCreateRequest(
     string Name,
     int Price,
     string Description,

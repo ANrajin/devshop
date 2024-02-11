@@ -1,5 +1,3 @@
-using AutoMapper;
-
 namespace devshop.api.Books;
 
 public static class BooksEndPoints
@@ -22,19 +20,50 @@ public static class BooksEndPoints
 
         app.MapPost("/books", async (
             IBooksService booksService,
-            IMapper mapper,
-            BooksRequest request) =>
+            BooksCreateRequest request) =>
         {
             try
             {
-                var books = mapper.Map<Book>(request);
-                await booksService.InsertBooks(books);
+                await booksService.InsertBooksAsync(request);
                 return Results.Ok();
             }
             catch (Exception e)
             {
                 Console.WriteLine(e);
                 return Results.Problem();
+            }
+        });
+
+        app.MapPut("/books/{id:Guid}", async (
+            Guid id, 
+            IBooksService booksService,
+            BooksUpdateRequest request) =>
+        {
+            try
+            {
+                await booksService.UpdateBooksAsync(id, request);
+                return Results.Ok();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return Results.Problem();
+            }
+        });
+        
+        app.MapDelete("/books/{id:Guid}", async (
+            Guid id, 
+            IBooksService booksService) =>
+        {
+            try
+            {
+                await booksService.DestroyBooksAsync(id);
+                return Results.Ok();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return Results.NotFound();
             }
         });
     }
