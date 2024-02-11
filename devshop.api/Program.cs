@@ -12,7 +12,7 @@ builder.Services.AddScoped<IApplicationDbContext>(provider =>
     provider.GetRequiredService<ApplicationDbContext>());
 builder.Services.AddScoped<IBooksService, BooksService>();
 
-//Entity Interceptor
+//Entity Interceptors
 builder.Services.AddSingleton<EntityInterceptor>();
 
 // Add services to the container.
