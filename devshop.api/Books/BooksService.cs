@@ -19,6 +19,14 @@ public sealed class BooksService(
         return mapper.Map<IReadOnlyCollection<BooksResponse>>(books);
     }
 
+    public async Task<BooksResponse> GetBooks(Guid id)
+    {
+        var book = await applicationDbContext.Books.FindAsync(id)
+                   ?? throw new ArgumentException("The requested resource not found!");
+
+        return mapper.Map<BooksResponse>(book);
+    }
+
     public async Task InsertBooksAsync(BooksCreateRequest bookCreate)
     {
         var books = mapper.Map<Book>(bookCreate);

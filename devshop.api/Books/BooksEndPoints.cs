@@ -18,6 +18,20 @@ public static class BooksEndPoints
             }
         });
 
+        app.MapGet("books/{id:Guid}", async (Guid id, IBooksService booksService) =>
+        {
+            try
+            {
+                var data = await booksService.GetBooks(id);
+                return Results.Ok(data);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return Results.NotFound();
+            }
+        });
+
         app.MapPost("/books", async (
             IBooksService booksService,
             BooksCreateRequest request) =>
@@ -42,7 +56,7 @@ public static class BooksEndPoints
             try
             {
                 await booksService.UpdateBooksAsync(id, request);
-                return Results.Ok();
+                return Results.NoContent();
             }
             catch (Exception e)
             {
@@ -58,7 +72,7 @@ public static class BooksEndPoints
             try
             {
                 await booksService.DestroyBooksAsync(id);
-                return Results.Ok();
+                return Results.NoContent();
             }
             catch (Exception e)
             {
