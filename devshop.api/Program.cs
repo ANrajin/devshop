@@ -1,5 +1,6 @@
 using devshop.api.Books;
 using devshop.api.Contexts;
+using devshop.api.Interceptor;
 using Microsoft.EntityFrameworkCore;
 
 const string connectionStrName = "DevShopDb";
@@ -11,11 +12,20 @@ builder.Services.AddScoped<IApplicationDbContext>(provider =>
     provider.GetRequiredService<ApplicationDbContext>());
 builder.Services.AddScoped<IBooksService, BooksService>();
 
+//Entity Interceptor
+builder.Services.AddSingleton<EntityInterceptor>();
+
 // Add services to the container.
-builder.Services.AddDbContext<ApplicationDbContext>(opt =>
+builder.Services.AddDbContext<ApplicationDbContext>((sp, options) =>
 {
-    opt.UseSqlServer(connectionString);
+    var entityInterceptor = sp.GetService<EntityInterceptor>()!;
+    
+    options.UseSqlServer(connectionString)
+        .AddInterceptors(entityInterceptor);
 });
+
+//Automapper
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

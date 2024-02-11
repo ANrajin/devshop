@@ -1,14 +1,19 @@
+using AutoMapper;
 using devshop.api.Contexts;
 using Microsoft.EntityFrameworkCore;
 
 namespace devshop.api.Books;
 
-public sealed class BooksService(IApplicationDbContext applicationDbContext) 
+public sealed class BooksService(
+    IApplicationDbContext applicationDbContext,
+    IMapper mapper) 
     : IBooksService
 {
-    public async Task<IReadOnlyCollection<Book>> GetAllBooks()
+    public async Task<IReadOnlyCollection<BooksResponse>> GetAllBooks()
     {
-        return await applicationDbContext.Books.ToListAsync();
+        var books = await applicationDbContext.Books.ToListAsync();
+
+        return mapper.Map<IReadOnlyCollection<BooksResponse>>(books);
     }
 
     public async Task InsertBooks(Book book)
