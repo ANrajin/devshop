@@ -2,7 +2,7 @@ using AutoMapper;
 using devshop.api.Contexts;
 using Microsoft.EntityFrameworkCore;
 
-namespace devshop.api.Books;
+namespace devshop.api.Features.Books;
 
 public sealed class BooksService(
     IApplicationDbContext applicationDbContext,

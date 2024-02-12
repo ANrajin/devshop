@@ -1,7 +1,7 @@
 using devshop.api.Commons;
 using Humanizer;
 
-namespace devshop.api.Books;
+namespace devshop.api.Features.Books;
 
 public sealed class Book : BaseEntity
 {

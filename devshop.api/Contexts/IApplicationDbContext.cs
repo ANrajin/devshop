@@ -1,4 +1,4 @@
-using devshop.api.Books;
+using devshop.api.Features.Books;
 using Microsoft.EntityFrameworkCore;
 
 namespace devshop.api.Contexts;

@@ -1,6 +1,6 @@
 using AutoMapper;
 
-namespace devshop.api.Books;
+namespace devshop.api.Features.Books;
 
 public sealed class BooksMapper : Profile
 {
