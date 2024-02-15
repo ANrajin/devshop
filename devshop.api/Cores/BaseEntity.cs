@@ -1,4 +1,4 @@
-namespace devshop.api.Commons;
+namespace devshop.api.Cores;
 
 public abstract class BaseEntity
 {

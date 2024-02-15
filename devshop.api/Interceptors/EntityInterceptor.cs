@@ -1,4 +1,4 @@
-using devshop.api.Commons;
+using devshop.api.Cores;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 

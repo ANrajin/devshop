@@ -1,6 +1,4 @@
-using devshop.api.Commons.Contracts;
-
-namespace devshop.api.Commons;
+namespace devshop.api.Cores.Utilities;
 
 public class DateTimeProvider : IDateTimeProvider
 {

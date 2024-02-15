@@ -1,7 +1,7 @@
 ﻿using devshop.api.Contexts;
 using devshop.api.Features.Books.Repositories;
 
-namespace devshop.api.Commons.UnitOfWorks;
+namespace devshop.api.Cores.UnitOfWorks;
 
 public class UnitOfWorks(
     IApplicationDbContext applicationDbContext,

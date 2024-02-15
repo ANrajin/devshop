@@ -1,6 +1,6 @@
 using AutoMapper;
 
-namespace devshop.api.Commons;
+namespace devshop.api.Cores;
 
 public sealed class Mapper : Profile
 {

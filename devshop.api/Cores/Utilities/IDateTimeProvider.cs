@@ -1,4 +1,4 @@
-namespace devshop.api.Commons.Contracts;
+namespace devshop.api.Cores.Utilities;
 
 public interface IDateTimeProvider
 {

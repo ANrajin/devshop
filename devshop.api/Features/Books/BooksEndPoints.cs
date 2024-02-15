@@ -8,84 +8,90 @@ public static class BooksEndPoints
     public static void MapBookEndPoints(this IEndpointRouteBuilder app)
     {
         app.MapGet("/books", async (IBooksService booksService) =>
-        {
-            try
             {
-                var result = await booksService.GetAllBooks();
-                return Results.Ok(result);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                return Results.Problem();
-            }
-        }).WithTags("Books");
+                try
+                {
+                    var result = await booksService.GetAllBooks();
+                    return Results.Ok(result);
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                    return Results.Problem();
+                }
+            })
+            .WithTags("Books")
+            .RequireAuthorization();
 
         app.MapGet("books/{id:Guid}", async (Guid id, IBooksService booksService) =>
-        {
-            try
             {
-                var data = await booksService.GetBooks(id);
-                return Results.Ok(data);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                return Results.NotFound();
-            }
-        }).WithTags("Books");
+                try
+                {
+                    var data = await booksService.GetBooks(id);
+                    return Results.Ok(data);
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                    return Results.NotFound();
+                }
+            })
+            .WithTags("Books")
+            .RequireAuthorization();
 
         app.MapPost("/books", async (
-            IBooksService booksService,
-            BooksCreateRequest request) =>
-        {
-            try
+                IBooksService booksService,
+                BooksCreateRequest request) =>
             {
-                await booksService.InsertBooksAsync(request);
-                return Results.Ok();
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                return Results.Problem();
-            }
-        })
-        .WithTags("Books")
-        .RequireAuthorization();
+                try
+                {
+                    await booksService.InsertBooksAsync(request);
+                    return Results.Ok();
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                    return Results.Problem();
+                }
+            })
+            .WithTags("Books")
+            .RequireAuthorization();
 
         app.MapPut("/books/{id:Guid}", async (
-            Guid id, 
-            IBooksService booksService,
-            BooksUpdateRequest request) =>
-        {
-            try
+                Guid id,
+                IBooksService booksService,
+                BooksUpdateRequest request) =>
             {
-                await booksService.UpdateBooksAsync(id, request);
-                return Results.NoContent();
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                return Results.Problem();
-            }
-        })
-        .WithTags("Books");
-        
+                try
+                {
+                    await booksService.UpdateBooksAsync(id, request);
+                    return Results.NoContent();
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                    return Results.Problem();
+                }
+            })
+            .WithTags("Books")
+            .RequireAuthorization();
+
         app.MapDelete("/books/{id:Guid}", async (
-            Guid id, 
-            IBooksService booksService) =>
-        {
-            try
+                Guid id,
+                IBooksService booksService) =>
             {
-                await booksService.DestroyBooksAsync(id);
-                return Results.NoContent();
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                return Results.NotFound();
-            }
-        })
-        .WithTags("Books");
+                try
+                {
+                    await booksService.DestroyBooksAsync(id);
+                    return Results.NoContent();
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                    return Results.NotFound();
+                }
+            })
+            .WithTags("Books")
+            .RequireAuthorization();
     }
 }

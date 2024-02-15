@@ -1,7 +1,7 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using devshop.api.Commons.Contracts;
+using devshop.api.Cores.Utilities;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
@@ -9,7 +9,7 @@ namespace devshop.api.Features.Auths.JWT;
 
 public class JwtTokenGenerator(
     IDateTimeProvider dateTimeProvider,
-    IOptions<JwtSettings> jwtSettings)
+    IOptions<JwtSettings> jwtSettings) : IJwtTokenGenerator
 {
     private readonly JwtSettings _jwtSettings = jwtSettings.Value;
 

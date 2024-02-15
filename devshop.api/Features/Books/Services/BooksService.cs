@@ -1,5 +1,5 @@
 using AutoMapper;
-using devshop.api.Commons.UnitOfWorks;
+using devshop.api.Cores.UnitOfWorks;
 using devshop.api.Features.Books.Requests;
 
 namespace devshop.api.Features.Books.Services;
