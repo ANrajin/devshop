@@ -19,7 +19,7 @@ public static class BooksEndPoints
                 Console.WriteLine(e);
                 return Results.Problem();
             }
-        });
+        }).WithTags("Books");
 
         app.MapGet("books/{id:Guid}", async (Guid id, IBooksService booksService) =>
         {
@@ -33,7 +33,7 @@ public static class BooksEndPoints
                 Console.WriteLine(e);
                 return Results.NotFound();
             }
-        });
+        }).WithTags("Books");
 
         app.MapPost("/books", async (
             IBooksService booksService,
@@ -49,7 +49,9 @@ public static class BooksEndPoints
                 Console.WriteLine(e);
                 return Results.Problem();
             }
-        });
+        })
+        .WithTags("Books")
+        .RequireAuthorization();
 
         app.MapPut("/books/{id:Guid}", async (
             Guid id, 
@@ -66,7 +68,8 @@ public static class BooksEndPoints
                 Console.WriteLine(e);
                 return Results.Problem();
             }
-        });
+        })
+        .WithTags("Books");
         
         app.MapDelete("/books/{id:Guid}", async (
             Guid id, 
@@ -82,6 +85,7 @@ public static class BooksEndPoints
                 Console.WriteLine(e);
                 return Results.NotFound();
             }
-        });
+        })
+        .WithTags("Books");
     }
 }
