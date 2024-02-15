@@ -2,7 +2,7 @@ using devshop.api.Commons;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 
-namespace devshop.api.Interceptor;
+namespace devshop.api.Interceptors;
 
 public sealed class EntityInterceptor : SaveChangesInterceptor
 {

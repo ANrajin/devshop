@@ -1,5 +1,4 @@
 using devshop.api.Auths.Entities;
-using devshop.api.Features.Books;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -12,5 +11,16 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> dbConte
     public async Task SaveAsync(CancellationToken cancellationToken) 
         => await SaveChangesAsync(cancellationToken);
 
-    public DbSet<Book> Books => Set<Book>();
+    public DbSet<TEntity> DbSet<TEntity>() where TEntity : class
+        => Set<TEntity>();
+    
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        //Set Table Name as devshop.TableName
+        modelBuilder.HasDefaultSchema("devshop");
+            
+        modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
+
+        base.OnModelCreating(modelBuilder);
+    }
 }

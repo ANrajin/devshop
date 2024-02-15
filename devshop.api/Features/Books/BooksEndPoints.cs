@@ -1,3 +1,6 @@
+using devshop.api.Features.Books.Requests;
+using devshop.api.Features.Books.Services;
+
 namespace devshop.api.Features.Books;
 
 public static class BooksEndPoints

@@ -1,27 +1,24 @@
 using AutoMapper;
-using devshop.api.Contexts;
-using Microsoft.EntityFrameworkCore;
+using devshop.api.Commons.UnitOfWorks;
+using devshop.api.Features.Books.Requests;
 
-namespace devshop.api.Features.Books;
+namespace devshop.api.Features.Books.Services;
 
 public sealed class BooksService(
-    IApplicationDbContext applicationDbContext,
+    IUnitOfWorks unitOfWorks,
     IMapper mapper)
     : IBooksService
 {
     public async Task<IReadOnlyCollection<BooksResponse>> GetAllBooks()
     {
-        var books = await applicationDbContext
-            .Books
-            .AsNoTracking()
-            .ToListAsync();
+        var books = await unitOfWorks.BookRepository.GetAllAsync();
 
         return mapper.Map<IReadOnlyCollection<BooksResponse>>(books);
     }
 
     public async Task<BooksResponse> GetBooks(Guid id)
     {
-        var book = await applicationDbContext.Books.FindAsync(id)
+        var book = await unitOfWorks.BookRepository.GetByIdAsync(id)
                    ?? throw new ArgumentException("The requested resource not found!");
 
         return mapper.Map<BooksResponse>(book);
@@ -30,14 +27,14 @@ public sealed class BooksService(
     public async Task InsertBooksAsync(BooksCreateRequest bookCreate)
     {
         var books = mapper.Map<Book>(bookCreate);
-        
-        await applicationDbContext.Books.AddAsync(books);
-        await applicationDbContext.SaveAsync();
+
+        await unitOfWorks.BookRepository.InsertAsync(books);
+        await unitOfWorks.SaveAsync();
     }
 
-    public async Task UpdateBooksAsync(Guid bookId, BooksUpdateRequest request)
+    public async Task UpdateBooksAsync(Guid id, BooksUpdateRequest request)
     {
-        var book = await applicationDbContext.Books.FindAsync(bookId)
+        var book = await unitOfWorks.BookRepository.GetByIdAsync(id)
                    ?? throw new ArgumentException("The requested resource not found!");
 
         mapper.Map(request, book);
@@ -47,16 +44,16 @@ public sealed class BooksService(
             book.PublishedAt = DateOnly.FromDateTime(request.PublishedAt);
         }
         
-        await applicationDbContext.SaveAsync();
+        await unitOfWorks.SaveAsync();
     }
 
     public async Task DestroyBooksAsync(Guid id)
     {
-        var book = await applicationDbContext.Books.FindAsync(id)
+        var book = await unitOfWorks.BookRepository.GetByIdAsync(id)
                    ?? throw new ArgumentException("The requested item not found!");
 
-        applicationDbContext.Books.Remove(book);
+        await unitOfWorks.BookRepository.DeleteAsync(book);
         
-        await applicationDbContext.SaveAsync();
+        await unitOfWorks.SaveAsync();
     }
 }

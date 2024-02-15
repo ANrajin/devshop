@@ -1,6 +1,16 @@
-﻿namespace devshop.api.Commons.UnitOfWorks;
+﻿using devshop.api.Contexts;
+using devshop.api.Features.Books.Repositories;
 
-public class UnitOfWorks : IUnitOfWorks
+namespace devshop.api.Commons.UnitOfWorks;
+
+public class UnitOfWorks(
+    IApplicationDbContext applicationDbContext,
+    IBookRepository bookRepository
+    )
+    : IUnitOfWorks
 {
+    public async Task SaveAsync(CancellationToken cancellationToken=default) =>
+        await applicationDbContext.SaveAsync(cancellationToken);
     
+    public IBookRepository BookRepository { get; } = bookRepository;
 }

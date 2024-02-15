@@ -1,4 +1,4 @@
-namespace devshop.api.Features.Books;
+namespace devshop.api.Features.Books.Requests;
 
 public sealed record BooksUpdateRequest(
     string Name,

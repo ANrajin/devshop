@@ -1,6 +1,9 @@
+using devshop.api.Commons.UnitOfWorks;
 using devshop.api.Contexts;
 using devshop.api.Features.Books;
-using devshop.api.Interceptor;
+using devshop.api.Features.Books.Repositories;
+using devshop.api.Features.Books.Services;
+using devshop.api.Interceptors;
 using Microsoft.EntityFrameworkCore;
 
 const string connectionStrName = "DevShopDb";
@@ -10,6 +13,8 @@ var connectionString = builder.Configuration.GetConnectionString(connectionStrNa
 //Dependencies
 builder.Services.AddScoped<IApplicationDbContext>(provider => 
     provider.GetRequiredService<ApplicationDbContext>());
+builder.Services.AddScoped<IUnitOfWorks, UnitOfWorks>();
+builder.Services.AddScoped<IBookRepository, BookRepository>();
 builder.Services.AddScoped<IBooksService, BooksService>();
 
 //Entity Interceptors

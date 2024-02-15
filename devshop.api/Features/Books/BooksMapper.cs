@@ -1,4 +1,5 @@
 using AutoMapper;
+using devshop.api.Features.Books.Requests;
 
 namespace devshop.api.Features.Books;
 

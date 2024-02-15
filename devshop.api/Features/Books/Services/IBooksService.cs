@@ -1,4 +1,6 @@
-namespace devshop.api.Features.Books;
+using devshop.api.Features.Books.Requests;
+
+namespace devshop.api.Features.Books.Services;
 
 public interface IBooksService
 {
