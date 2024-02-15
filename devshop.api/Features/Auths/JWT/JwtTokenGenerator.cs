@@ -42,9 +42,4 @@ public class JwtTokenGenerator(
 
         return tokenHandler.WriteToken(token);
     }
-
-    public string GenerateJwtRefreshToken()
-    {
-        throw new NotImplementedException();
-    }
 }
