@@ -6,12 +6,15 @@ using devshop.api.Cores.UnitOfWorks;
 using devshop.api.Cores.Utilities;
 using devshop.api.Features.Auths;
 using devshop.api.Features.Auths.JWT;
+using devshop.api.Features.Auths.Securities;
 using devshop.api.Features.Auths.Services;
+using devshop.api.Features.Books;
 using devshop.api.Features.Books.Repositories;
 using devshop.api.Features.Books.Requests;
 using devshop.api.Features.Books.Services;
 using devshop.api.Interceptors;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
@@ -55,7 +58,9 @@ builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddControllers();
+//builder.Services.AddControllers();
+
+builder.Services.AddSingleton<IAuthorizationHandler, BooksRequirementHandler>();
 
 //Auth
 builder.Services
@@ -65,6 +70,14 @@ builder.Services
     .AddSignInManager<SigninManagerAdapter>()
     .AddRoleManager<RoleManagerAdapter>()
     .AddDefaultTokenProviders();
+
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy(DevshopPolicies.BooksPolicy, policy =>
+    {
+        policy.Requirements.Add(new BooksRequirement());
+    });
+});
 
 builder.Services.Configure<IdentityOptions>(options =>
 {
@@ -174,8 +187,10 @@ app.UseHttpsRedirection();
 
 app.UseAuthentication();
 app.UseAuthorization();
-app.MapControllers();
-//app.MapBookEndPoints();
+
 app.MapAuthEndPoints();
+//app.MapControllers();
+app.MapBookEndPoints();
+
 
 app.Run();

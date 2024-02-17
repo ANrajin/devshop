@@ -2,6 +2,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using devshop.api.Cores.Utilities;
+using devshop.api.Features.Auths.Securities;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
@@ -34,7 +35,7 @@ public class JwtTokenGenerator(
         
         claims.AddRange(permissions
             .Where(x => x.Value.Equals("true"))
-            .Select(permission => new Claim("claims", permission.Type)));
+            .Select(permission => new Claim(DevshopClaims.ClaimType, permission.Type)));
 
         var securityTokenDescriptor = new SecurityTokenDescriptor
         {

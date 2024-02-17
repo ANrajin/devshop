@@ -2,6 +2,7 @@ namespace devshop.api.Features.Auths.Securities;
 
 public sealed record DevshopClaims
 {
+    public const string ClaimType = "Permissions";
     private const string ClaimValue = "true";
     
     //BooksClaim

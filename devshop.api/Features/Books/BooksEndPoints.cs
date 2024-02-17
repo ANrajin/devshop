@@ -1,3 +1,4 @@
+using devshop.api.Features.Auths.Securities;
 using devshop.api.Features.Books.Requests;
 using devshop.api.Features.Books.Services;
 
@@ -55,7 +56,7 @@ public static class BooksEndPoints
                 }
             })
             .WithTags("Books")
-            .RequireAuthorization();
+            .RequireAuthorization(DevshopPolicies.BooksPolicy);
 
         app.MapPut("/books/{id:Guid}", async (
                 Guid id,
