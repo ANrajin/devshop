@@ -7,8 +7,8 @@ using devshop.api.Cores.Utilities;
 using devshop.api.Features.Auths;
 using devshop.api.Features.Auths.JWT;
 using devshop.api.Features.Auths.Services;
-using devshop.api.Features.Books;
 using devshop.api.Features.Books.Repositories;
+using devshop.api.Features.Books.Requests;
 using devshop.api.Features.Books.Services;
 using devshop.api.Interceptors;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -36,6 +36,8 @@ builder.Services.AddScoped<IUserManagerService, UserManagerService>();
 builder.Services.AddScoped<ISigninManagerAdapter, SigninManagerAdapter>();
 builder.Services.AddScoped<ISigninManagerService, SigninManagerService>();
 
+builder.Services.AddScoped<BooksRequestHandler>();
+
 //Entity Interceptors
 builder.Services.AddSingleton<EntityInterceptor>();
 
@@ -53,6 +55,7 @@ builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddControllers();
 
 //Auth
 builder.Services
@@ -171,8 +174,8 @@ app.UseHttpsRedirection();
 
 app.UseAuthentication();
 app.UseAuthorization();
-
-app.MapBookEndPoints();
+app.MapControllers();
+//app.MapBookEndPoints();
 app.MapAuthEndPoints();
 
 app.Run();
