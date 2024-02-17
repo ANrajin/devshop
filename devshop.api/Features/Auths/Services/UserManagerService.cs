@@ -1,8 +1,10 @@
+using System.Security.Claims;
 using devshop.api.Auths.Entities;
 using devshop.api.Cores.Adapters;
 using devshop.api.Features.Auths.JWT;
 using devshop.api.Features.Auths.Requests;
 using devshop.api.Features.Auths.Responses;
+using devshop.api.Features.Auths.Securities;
 
 namespace devshop.api.Features.Auths.Services;
 
@@ -26,11 +28,16 @@ public class UserManagerService(
 
         var user = await userManagerAdapter.CreateUserAsync(applicationUser, request.Password);
 
-        if (user.Succeeded)
-        {
-            token = jwtTokenGenerator.GenerateJwtToken
-                (applicationUser.Id, applicationUser.UserName, applicationUser.Email);
-        }
+        if (!user.Succeeded) return new AuthResponse(token);
+
+        var claim = new Claim(DevshopClaims.CanViewBooksClaim, DevshopClaims.CanViewBooksClaimValue);
+        
+        await userManagerAdapter.AddClaimAsync(applicationUser, claim);
+            
+        token = jwtTokenGenerator.GenerateJwtToken(applicationUser.Id, 
+            applicationUser.UserName, 
+            applicationUser.Email,
+            new List<Claim>{claim});
 
         return new AuthResponse(token);
     }

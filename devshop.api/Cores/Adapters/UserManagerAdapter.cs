@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using devshop.api.Auths.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;

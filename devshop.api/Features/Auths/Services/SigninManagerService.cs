@@ -21,8 +21,12 @@ public class SigninManagerService(
         var validUser = await signinManagerAdapter.CheckPasswordSignInAsync(user, request.Password, false)
             ?? throw new ArgumentException("The requested user not found!");
 
-        if (validUser.Succeeded)
-            token = jwtTokenGenerator.GenerateJwtToken(user.Id, user.UserName!, user.Email!);
+        if (!validUser.Succeeded)
+            return new AuthResponse(token);
+
+        var claims = await userManagerAdapter.GetClaimsAsync(user);
+        
+        token = jwtTokenGenerator.GenerateJwtToken(user.Id, user.UserName!, user.Email!, claims);
         
         return new AuthResponse(token);
     }

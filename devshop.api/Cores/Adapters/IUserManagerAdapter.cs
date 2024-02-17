@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using devshop.api.Auths.Entities;
 using Microsoft.AspNetCore.Identity;
 
@@ -10,4 +11,8 @@ public interface IUserManagerAdapter
     Task<ApplicationUser?> FindByEmailAsync(string email);
 
     Task<ApplicationUser?> FindByUserNameAsync(string userName);
+
+    Task<IdentityResult> AddClaimAsync(ApplicationUser user, Claim claim);
+
+    Task<IList<Claim>> GetClaimsAsync(ApplicationUser user);
 }

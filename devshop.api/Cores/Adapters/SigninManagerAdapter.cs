@@ -14,6 +14,4 @@ public class SigninManagerAdapter(
     IAuthenticationSchemeProvider schemes,
     IUserConfirmation<ApplicationUser> confirmation)
     : SignInManager<ApplicationUser>(userManager, contextAccessor, claimsFactory, optionsAccessor, logger, schemes,
-        confirmation), ISigninManagerAdapter
-{
-};
+        confirmation), ISigninManagerAdapter;

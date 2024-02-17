@@ -13,7 +13,11 @@ public class JwtTokenGenerator(
 {
     private readonly JwtSettings _jwtSettings = jwtSettings.Value;
 
-    public string GenerateJwtToken(Guid id, string userName, string email)
+    public string GenerateJwtToken(
+        Guid id, 
+        string userName, 
+        string email,
+        IEnumerable<Claim> permissions)
     {
         var jti = Guid.NewGuid().ToString();
         var tokenHandler = new JwtSecurityTokenHandler();
@@ -22,11 +26,15 @@ public class JwtTokenGenerator(
             new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.SecretKey)),
             SecurityAlgorithms.HmacSha256);
 
-        var claims = new[]
+        var claims = new List<Claim>()
         {
-            new Claim(JwtRegisteredClaimNames.Jti, jti),
-            new Claim(JwtRegisteredClaimNames.Sub, userName),
+            new(JwtRegisteredClaimNames.Jti, jti),
+            new(JwtRegisteredClaimNames.Sub, userName),
         };
+        
+        claims.AddRange(permissions
+            .Where(x => x.Value.Equals("true"))
+            .Select(permission => new Claim("claims", permission.Type)));
 
         var securityTokenDescriptor = new SecurityTokenDescriptor
         {
@@ -35,7 +43,7 @@ public class JwtTokenGenerator(
             Subject = new ClaimsIdentity(claims),
             Issuer = _jwtSettings.Issuer,
             Audience = _jwtSettings.Audience,
-            IssuedAt = dateTimeProvider.UtcNow
+            IssuedAt = dateTimeProvider.UtcNow,
         };
 
         var token = tokenHandler.CreateToken(securityTokenDescriptor);
