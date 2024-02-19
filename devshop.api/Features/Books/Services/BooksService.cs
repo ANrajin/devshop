@@ -32,6 +32,13 @@ public sealed class BooksService(
         await unitOfWorks.SaveAsync();
     }
 
+    public async Task InsertBooksAsync(IEnumerable<Book> books, 
+        CancellationToken cancellationToken = default)
+    {
+        await unitOfWorks.BookRepository.InsertRangeAsync(books, cancellationToken);
+        await unitOfWorks.SaveAsync(cancellationToken);
+    }
+
     public async Task UpdateBooksAsync(Guid id, BooksUpdateRequest request)
     {
         var book = await unitOfWorks.BookRepository.GetByIdAsync(id)

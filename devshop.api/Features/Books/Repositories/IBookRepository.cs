@@ -7,7 +7,12 @@ public interface IBookRepository
 
     Task<Book?> GetByIdAsync(Guid id);
 
-    Task InsertAsync(Book book);
+    Task InsertAsync(Book book, 
+        CancellationToken cancellationToken = default);
 
-    Task DeleteAsync(Book book);
+    Task InsertRangeAsync(IEnumerable<Book> books,
+        CancellationToken cancellationToken = default);
+
+    Task DeleteAsync(Book book, 
+        CancellationToken cancellationToken = default);
 }

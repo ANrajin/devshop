@@ -12,6 +12,7 @@ using devshop.api.Features.Books;
 using devshop.api.Features.Books.Repositories;
 using devshop.api.Features.Books.Requests;
 using devshop.api.Features.Books.Services;
+using devshop.api.Features.Samples;
 using devshop.api.Interceptors;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -191,6 +192,6 @@ app.UseAuthorization();
 app.MapAuthEndPoints();
 //app.MapControllers();
 app.MapBookEndPoints();
-
+app.MapSamplesEndPoints();
 
 app.Run();

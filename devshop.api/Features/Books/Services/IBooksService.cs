@@ -10,6 +10,9 @@ public interface IBooksService
 
     public Task InsertBooksAsync(BooksCreateRequest bookCreate);
 
+    Task InsertBooksAsync(IEnumerable<Book> books,
+        CancellationToken cancellationToken = default);
+
     public Task UpdateBooksAsync(Guid bookId, BooksUpdateRequest request);
     
     public Task DestroyBooksAsync(Guid id);

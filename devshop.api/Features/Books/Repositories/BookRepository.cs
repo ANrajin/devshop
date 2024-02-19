@@ -24,12 +24,20 @@ public class BookRepository(IApplicationDbContext dbContext) : IBookRepository
         return await _dbSet.FindAsync(id);
     }
 
-    public async Task InsertAsync(Book book)
+    public async Task InsertAsync(Book book,
+        CancellationToken cancellationToken = default)
     {
         await _dbSet.AddAsync(book);
     }
 
-    public async Task DeleteAsync(Book book)
+    public async Task InsertRangeAsync(IEnumerable<Book> books, 
+        CancellationToken cancellationToken = default)
+    {
+        await _dbSet.AddRangeAsync(books, cancellationToken);
+    }
+
+    public async Task DeleteAsync(Book book, 
+        CancellationToken cancellationToken = default)
     {
         await Task.Run(() =>
         {
