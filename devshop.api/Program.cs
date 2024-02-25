@@ -189,9 +189,13 @@ app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.MapAuthEndPoints();
 //app.MapControllers();
+
+app.MapAuthEndPoints();
 app.MapBookEndPoints();
-app.MapSamplesEndPoints();
+app
+    .MapGroup("sample")
+    .WithTags("Sample")
+    .MapSamplesEndPoints();
 
 app.Run();

@@ -24,7 +24,6 @@ public static class SamplesEndPoint
                 await service.InsertBooksAsync(books);
 
                 return Results.Ok();
-            })
-            .WithTags("sample");
+            });
     }
 }
