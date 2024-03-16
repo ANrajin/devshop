@@ -26,7 +26,8 @@ public static class BooksEndPoints
             try
             {
                 var result = await booksService.GetAllBooks();
-                return Results.Ok(result);
+
+                return TypedResults.Ok(result);
             }
             catch (Exception e)
             {
@@ -34,8 +35,19 @@ public static class BooksEndPoints
                 return Results.Problem();
             }
         })
-        .WithTags(_tag)
-        .RequireAuthorization();
+            .WithTags(_tag)
+            .WithName("GetBooks")
+            .RequireAuthorization()
+            .WithOpenApi(operation =>
+            {
+                operation.OperationId = "books";
+                operation.Summary = "Get all books";
+                operation.Description = "This endpoint provides a readonly list of all books.";
+                return operation;
+            })
+            .Produces<IReadOnlyCollection<Book>>()
+            .Produces(StatusCodes.Status401Unauthorized)
+            .ProducesProblem(StatusCodes.Status500InternalServerError);
     }
 
     private static void GetBook(IEndpointRouteBuilder app)
