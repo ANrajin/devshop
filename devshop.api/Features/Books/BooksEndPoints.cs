@@ -2,157 +2,204 @@ using Bogus;
 using devshop.api.Features.Auths.Securities;
 using devshop.api.Features.Books.Requests;
 using devshop.api.Features.Books.Services;
+using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace devshop.api.Features.Books;
 
 public static class BooksEndPoints
 {
-    private const string _tag = "Book";
-
-    public static void MapBookEndPoints(this IEndpointRouteBuilder app)
+    public static RouteGroupBuilder MapBooksApi(this RouteGroupBuilder group)
     {
-        GetBooks(app);
-        GetBook(app);
-        InsertBooks(app);
-        UpdateBooks(app);
-        DeleteBooks(app);
-        InsertSampleBooks(app);
+        GetBooks(group);
+        GetBook(group);
+        InsertBooks(group);
+        UpdateBooks(group);
+        DeleteBooks(group);
+        InsertSampleBooks(group);
+
+        return group;
     }
 
-    private static void GetBooks(IEndpointRouteBuilder app)
+    private static void GetBooks(RouteGroupBuilder builder)
     {
-        app.MapGet("/books", async (IBooksService booksService) =>
+        builder.MapGet("/", async Task<Results<Ok<IReadOnlyCollection<BooksResponse>>, ProblemHttpResult>>
+            (IBooksService booksService) =>
         {
             try
             {
                 var result = await booksService.GetAllBooks();
-
                 return TypedResults.Ok(result);
             }
             catch (Exception e)
             {
                 Console.WriteLine(e);
-                return Results.Problem();
+                return TypedResults.Problem();
             }
         })
-            .WithTags(_tag)
-            .WithName("GetBooks")
             .RequireAuthorization()
+            .WithName("GetBooks")
             .WithOpenApi(operation =>
             {
-                operation.OperationId = "books";
+                operation.OperationId = "books.getAll";
                 operation.Summary = "Get all books";
                 operation.Description = "This endpoint provides a readonly list of all books.";
                 return operation;
             })
-            .Produces<IReadOnlyCollection<Book>>()
-            .Produces(StatusCodes.Status401Unauthorized)
             .ProducesProblem(StatusCodes.Status500InternalServerError);
     }
 
-    private static void GetBook(IEndpointRouteBuilder app)
+    private static void GetBook(RouteGroupBuilder builder)
     {
-        app.MapGet("books/{id:Guid}", async (Guid id, IBooksService booksService) =>
+        builder.MapGet("/{id:Guid}", async Task<Results<Ok<BooksResponse>, NotFound, ProblemHttpResult>>
+            (Guid id, IBooksService booksService) =>
         {
             try
             {
                 var data = await booksService.GetBooks(id);
-                return Results.Ok(data);
+
+                return data is not null 
+                    ? TypedResults.Ok(data) 
+                    : TypedResults.NotFound();
             }
             catch (Exception e)
             {
                 Console.WriteLine(e);
-                return Results.NotFound();
+                return TypedResults.Problem();
             }
         })
-            .WithTags(_tag)
-            .RequireAuthorization();
+            .RequireAuthorization()
+            .WithName("GetBook")
+            .WithOpenApi(operation =>
+            {
+                operation.OperationId = "books.get";
+                operation.Summary = "Get specific book item.";
+                operation.Description = "This endpoint provides a specific book requested by id.";
+                return operation;
+            })
+            .ProducesProblem(StatusCodes.Status404NotFound)
+            .ProducesProblem(StatusCodes.Status500InternalServerError);
     }
 
-    private static void InsertBooks(IEndpointRouteBuilder app)
+    private static void InsertBooks(RouteGroupBuilder builder)
     {
-        app.MapPost("/books", async (
-        IBooksService booksService,
-        BooksCreateRequest request) =>
+        builder.MapPost("/", async Task<Results<Created, ProblemHttpResult>> 
+            (IBooksService booksService, BooksCreateRequest request) =>
         {
             try
             {
                 await booksService.InsertBooksAsync(request);
-                return Results.Ok();
+                return TypedResults.Created();
             }
             catch (Exception e)
             {
                 Console.WriteLine(e);
-                return Results.Problem();
+                return TypedResults.Problem();
             }
         })
-            .WithTags(_tag)
-            .RequireAuthorization(DevshopPolicies.BooksPolicy);
+            .RequireAuthorization(DevshopPolicies.BooksPolicy)
+            .WithName("InsertBooks")
+            .WithOpenApi(operation =>
+            {
+                operation.OperationId = "books.create";
+                operation.Summary = "Insert book items.";
+                operation.Description = "This endpoint creates a specific book item.";
+                return operation;
+            })
+            .ProducesProblem(StatusCodes.Status500InternalServerError);
     }
 
-    private static void UpdateBooks(IEndpointRouteBuilder app)
+    private static void UpdateBooks(RouteGroupBuilder builder)
     {
-        app.MapPut("/books/{id:Guid}", async (
-        Guid id,
-        IBooksService booksService,
-        BooksUpdateRequest request) =>
+        builder.MapPut("/{id:Guid}", async Task<Results<NoContent, ProblemHttpResult>>
+            (Guid id, IBooksService booksService, BooksUpdateRequest request) =>
         {
             try
             {
                 await booksService.UpdateBooksAsync(id, request);
-                return Results.NoContent();
+                return TypedResults.NoContent();
             }
             catch (Exception e)
             {
                 Console.WriteLine(e);
-                return Results.Problem();
+                return TypedResults.Problem();
             }
         })
-            .WithTags(_tag)
-            .RequireAuthorization();
+            .RequireAuthorization()
+            .WithName("UpdateBooks")
+            .WithOpenApi(operation =>
+            {
+                operation.OperationId = "books.update";
+                operation.Summary = "Update book items.";
+                operation.Description = "This endpoint update a specific book requested by id.";
+                return operation;
+            })
+            .ProducesProblem(StatusCodes.Status500InternalServerError);
     }
 
-    private static void DeleteBooks(IEndpointRouteBuilder app)
+    private static void DeleteBooks(RouteGroupBuilder builder)
     {
-        app.MapDelete("/books/{id:Guid}", async (
-        Guid id,
-        IBooksService booksService) =>
+        builder.MapDelete("/{id:Guid}", async Task<Results<NoContent, NotFound>>
+            (Guid id, IBooksService booksService) =>
         {
             try
             {
                 await booksService.DestroyBooksAsync(id);
-                return Results.NoContent();
+                return TypedResults.NoContent();
             }
             catch (Exception e)
             {
                 Console.WriteLine(e);
-                return Results.NotFound();
+                return TypedResults.NotFound();
             }
         })
-            .WithTags(_tag)
-            .RequireAuthorization();
+            .RequireAuthorization()
+            .WithName("DeleteBooks")
+            .WithOpenApi(operation =>
+            {
+                operation.OperationId = "books.delete";
+                operation.Summary = "Delete book items.";
+                operation.Description = "This endpoint delete a specific book item requested by id.";
+                return operation;
+            })
+            .ProducesProblem(StatusCodes.Status404NotFound);
     }
 
-    private static void InsertSampleBooks(IEndpointRouteBuilder app)
+    private static void InsertSampleBooks(RouteGroupBuilder builder)
     {
-        app.MapGet("/sample", async (IBooksService service) =>
+        builder.MapGet("/sample", async Task<Results<Created, ProblemHttpResult>> (IBooksService service) =>
         {
-            var faker = new Faker<Book>();
-            faker.RuleFor(b => b.Name, f => f.Commerce.ProductName());
-            faker.RuleFor(b => b.Description, f => f.Commerce.ProductDescription());
-            faker.RuleFor(b => b.Price, f => f.Random.Int(100, 5000));
+            try
+            {
+                var faker = new Faker<Book>();
+                faker.RuleFor(b => b.Name, f => f.Commerce.ProductName());
+                faker.RuleFor(b => b.Description, f => f.Commerce.ProductDescription());
+                faker.RuleFor(b => b.Price, f => f.Random.Int(100, 5000));
 
-            var startDate = DateOnly.FromDateTime(new DateTime(1920, 02, 01));
-            var endDate = DateOnly.FromDateTime(new DateTime(2020, 12, 30));
-            faker.RuleFor(b => b.PublishedAt, f => f.Date.BetweenDateOnly(startDate, endDate));
+                var startDate = DateOnly.FromDateTime(new DateTime(1920, 02, 01));
+                var endDate = DateOnly.FromDateTime(new DateTime(2020, 12, 30));
+                faker.RuleFor(b => b.PublishedAt, f => f.Date.BetweenDateOnly(startDate, endDate));
 
-            var books = faker.Generate(100);
+                var books = faker.Generate(100);
 
-            await service.InsertBooksAsync(books);
+                await service.InsertBooksAsync(books);
 
-            return Results.Ok();
+                return TypedResults.Created();
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine(e);
+                return TypedResults.Problem();
+            }
         })
-            .WithTags(_tag)
-            .RequireAuthorization();
+            .RequireAuthorization()
+            .WithName("InsertSampleBooks")
+            .WithOpenApi(operation =>
+            {
+                operation.OperationId = "books.sample";
+                operation.Summary = "Insert 100 sample book items.";
+                operation.Description = "This endpoint insert 100 sample book items for testing.";
+                return operation;
+            })
+            .ProducesProblem(StatusCodes.Status500InternalServerError);
     }
 }

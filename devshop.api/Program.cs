@@ -35,6 +35,9 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.MapAuthEndPoints();
-app.MapBookEndPoints();
+
+app.MapGroup("/books")
+    .MapBooksApi()
+    .WithTags("Books");
 
 app.Run();
