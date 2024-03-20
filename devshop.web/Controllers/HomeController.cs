@@ -1,20 +1,26 @@
 using devshop.web.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using System.Drawing;
 
 namespace devshop.web.Controllers
 {
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private IWebHostEnvironment _webHostEnvironment;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger,
+            IWebHostEnvironment webHostEnvironment)
         {
             _logger = logger;
+            _webHostEnvironment = webHostEnvironment;
         }
 
         public IActionResult Index()
         {
+            Combine.Chunk(_webHostEnvironment);
+
             return View();
         }
 
@@ -36,13 +42,25 @@ namespace devshop.web.Controllers
         }
 
         [HttpPatch]
-        public IActionResult Upload(string patch)
+        public async Task<IActionResult> UploadAsync(string patch)
         {
-            var header = HttpContext.Request.Headers;
+            // Read the request body as a byte array
+            using (var ms = new MemoryStream())
+            {
+                await Request.Body.CopyToAsync(ms);
 
-            var request = HttpContext.Request;
+                byte[] chunkData = ms.ToArray();
 
-            return Ok(Guid.NewGuid());
+                // Example: use file name and unique identifier to track chunks
+                string fileName = Request.Headers["Upload-Name"];
+                var chunkIndex = DateTime.Now.Ticks;
+
+                // Example: save chunk data to disk
+                string chunkPath = Path.Combine(Path.Combine(_webHostEnvironment.WebRootPath, "tmp"), $"{fileName}_{chunkIndex}");
+                await System.IO.File.WriteAllBytesAsync(chunkPath, chunkData);
+
+                return Ok();
+            }
         }
     }
 }
