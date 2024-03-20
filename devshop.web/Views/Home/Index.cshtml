@@ -1,0 +1,24 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+@section Scripts{
+    <script>
+        const target = document.querySelector('input[name="filepond"]');
+
+        const pond = FilePond.create(target,{
+            name: 'filepond',
+            credits: false,
+            chunkForce: true,
+            chunkUploads: true,
+            chunkSize: 1024 * 1024 * 5,
+            server: {
+                url: '/home/upload',
+            }
+        });
+    </script>
+}
+
+<div class="text-center">
+    <input type="file" class="filepond" name="filepond"/>
+</div>
