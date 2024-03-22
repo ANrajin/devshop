@@ -11,7 +11,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
-namespace devshop.api.Configs
+namespace devshop.api.Configs.dependencies
 {
     public class AuthServicesInstaller : IServiceInstaller
     {

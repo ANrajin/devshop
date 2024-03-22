@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.OpenApi.Models;
 
-namespace devshop.api.Configs
+namespace devshop.api.Configs.dependencies
 {
     public class SwaggerServicesInstaller : IServiceInstaller
     {

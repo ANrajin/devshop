@@ -3,7 +3,7 @@ using devshop.api.Cores.Adapters;
 using devshop.api.Cores.Contracts;
 using devshop.api.Cores.UnitOfWorks;
 using devshop.api.Cores.Utilities;
-using devshop.api.Features.Auths.JWT;
+using devshop.api.Cores.Utilities.FileHandler;
 using devshop.api.Features.Auths.Services;
 using devshop.api.Features.Books.Repositories;
 using devshop.api.Features.Books.Requests;
@@ -11,11 +11,11 @@ using devshop.api.Features.Books.Services;
 using devshop.api.Interceptors;
 using Microsoft.EntityFrameworkCore;
 
-namespace devshop.api.Configs
+namespace devshop.api.Configs.dependencies
 {
     public class ApplicationServicesInstaller : IServiceInstaller
     {
-        public void Install(IServiceCollection services, 
+        public void Install(IServiceCollection services,
             IConfiguration configuration)
         {
             const string connectionStrName = "DevShopDb";
@@ -41,6 +41,7 @@ namespace devshop.api.Configs
             services.AddScoped<IDateTimeProvider, DateTimeProvider>();
             services.AddScoped<IBookRepository, BookRepository>();
             services.AddScoped<IBooksService, BooksService>();
+            services.AddScoped<IFileHandlerService, FileHandlerService>();
 
             services.AddScoped<IUserManagerAdapter, UserManagerAdapter>();
             services.AddScoped<IUserManagerService, UserManagerService>();
