@@ -22,7 +22,7 @@ public class FileHandlerService(IWebHostEnvironment webHostEnvironment) : IFileH
     public async Task UploadChunkAsync(FileUploadRequest request)
     {
         var chunkIndex = 1;
-        var totalChunk = request.UploadedFileOffset / request.UploadedContentLength;
+        var totalChunk = request.UploadedFileOffset + request.UploadedContentLength;
         var tmpFilePath = Path.Combine(_tmpFilesDir, request.DirectoryName);
 
         if (request.UploadedFileOffset > 0)
@@ -33,7 +33,7 @@ public class FileHandlerService(IWebHostEnvironment webHostEnvironment) : IFileH
         await File.WriteAllBytesAsync(Path.Combine(tmpFilePath, $"{request.FileName}{chunkIndex}"), 
             request.UploadedFileData);
 
-        if (totalChunk > 6)
+        if (totalChunk.Equals(request.UploadedFileLength))
         {
             var destPath = Path.Combine(_videoContentDir, request.FileName);
 
