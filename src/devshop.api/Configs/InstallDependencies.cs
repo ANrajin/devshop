@@ -23,9 +23,11 @@ namespace devshop.api.Configs
             return services;
         }
 
-        private static bool IsAssignableToType<T>(TypeInfo typeInfo) => 
-            typeof(T).IsAssignableFrom(typeInfo) 
-            && !typeInfo.IsInterface 
-            && !typeInfo.IsAbstract;
+        private static bool IsAssignableToType<T>(TypeInfo typeInfo)
+        {
+            return typeof(T).IsAssignableFrom(typeInfo)
+                && !typeInfo.IsInterface
+                && !typeInfo.IsAbstract;
+        }
     }
 }

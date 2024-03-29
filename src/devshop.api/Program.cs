@@ -3,61 +3,72 @@ using devshop.api.Cores.Contracts;
 using devshop.api.Features.Auths;
 using devshop.api.Features.Books;
 using devshop.api.Features.Courses;
+using Serilog;
+using Serilog.Events;
 
 var builder = WebApplication.CreateBuilder(args);
+var corsName = builder.Configuration.GetSection("CORS:Name").Value!;
 
 //Register Application Services
 builder.Services.AddControllers();
 builder.Services.AddServices(builder.Configuration,
     typeof(IServiceInstaller).Assembly);
 
-string allowedOrigins = "_allowedOrigins";
-
-builder.Services.AddCors(options =>
+builder.Host.UseSerilog((ctx, config) =>
 {
-    options.AddPolicy(name: allowedOrigins, policy =>
-    {
-        policy.AllowAnyOrigin()
-            .AllowAnyHeader()
-            .AllowAnyMethod();
-    });
+    config.MinimumLevel.Debug()
+    .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
+    .Enrich.FromLogContext()
+    .WriteTo.Console()
+    .ReadFrom.Configuration(ctx.Configuration);
 });
 
-
-var app = builder.Build();
-
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+try
 {
-    app.UseSwagger(options =>
+    var app = builder.Build();
+
+    Log.Information("Application built successfully.");
+
+    // Configure the HTTP request pipeline.
+    if (app.Environment.IsDevelopment())
     {
-        options.RouteTemplate = "swagger/{documentName}/swagger.json";
-    });
-        
-    app.UseSwaggerUI(options =>
-    {
-        options.RoutePrefix = string.Empty;
-        options.SwaggerEndpoint("/swagger/devshop-api-v1/swagger.json", "api-v1");
-    });
+        app.UseSwagger(options =>
+        {
+            options.RouteTemplate = "swagger/{documentName}/swagger.json";
+        });
+
+        app.UseSwaggerUI(options =>
+        {
+            options.RoutePrefix = string.Empty;
+            options.SwaggerEndpoint("/swagger/devshop-api-v1/swagger.json", "api-v1");
+        });
+    }
+
+    //Register Framework Middlewares
+    app.UseHttpsRedirection();
+    app.UseCors(corsName);
+    app.UseAuthentication();
+    app.UseAuthorization();
+    app.MapControllers();
+
+    //Register Minimal Api Endpoints
+    app.MapAuthEndPoints();
+
+    app.MapGroup("/books")
+        .MapBooksApi()
+        .WithTags("Books");
+
+    app.MapGroup("/courses")
+        .MapCoursesEndPoint()
+        .WithTags("Courses");
+
+    app.Run();
 }
-
-app.UseHttpsRedirection();
-
-app.UseCors(allowedOrigins);
-
-app.UseAuthentication();
-app.UseAuthorization();
-
-app.MapControllers();
-
-app.MapAuthEndPoints();
-
-app.MapGroup("/books")
-    .MapBooksApi()
-    .WithTags("Books");
-
-app.MapGroup("/courses")
-    .MapCoursesEndPoint()
-    .WithTags("Courses");
-
-app.Run();
+catch(Exception ex)
+{
+    Log.Error("The following {Exception} was thrown during application startup", ex);
+}
+finally
+{
+    await Log.CloseAndFlushAsync();
+}

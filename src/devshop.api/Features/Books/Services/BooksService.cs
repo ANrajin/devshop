@@ -19,7 +19,7 @@ public sealed class BooksService(
     public async Task<BooksResponse> GetBooks(Guid id)
     {
         var book = await unitOfWorks.BookRepository.GetByIdAsync(id)
-                   ?? throw new ArgumentException("The requested resource not found!");
+                   ?? throw new ArgumentException("The requested resource was not found!");
 
         return mapper.Map<BooksResponse>(book);
     }
