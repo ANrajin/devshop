@@ -45,7 +45,8 @@ public static class BooksEndPoints
                 operation.Description = "This endpoint provides a readonly list of all books.";
                 return operation;
             })
-            .ProducesProblem(StatusCodes.Status500InternalServerError);
+            .ProducesProblem(StatusCodes.Status500InternalServerError)
+            .ProducesProblem(StatusCodes.Status401Unauthorized);
     }
 
     private static void GetBook(RouteGroupBuilder builder)
@@ -77,7 +78,8 @@ public static class BooksEndPoints
                 return operation;
             })
             .ProducesProblem(StatusCodes.Status404NotFound)
-            .ProducesProblem(StatusCodes.Status500InternalServerError);
+            .ProducesProblem(StatusCodes.Status500InternalServerError)
+            .ProducesProblem(StatusCodes.Status401Unauthorized);
     }
 
     private static void InsertBooks(RouteGroupBuilder builder)
@@ -105,7 +107,8 @@ public static class BooksEndPoints
                 operation.Description = "This endpoint creates a specific book item.";
                 return operation;
             })
-            .ProducesProblem(StatusCodes.Status500InternalServerError);
+            .ProducesProblem(StatusCodes.Status500InternalServerError)
+            .ProducesProblem(StatusCodes.Status401Unauthorized);
     }
 
     private static void UpdateBooks(RouteGroupBuilder builder)
@@ -133,7 +136,8 @@ public static class BooksEndPoints
                 operation.Description = "This endpoint update a specific book requested by id.";
                 return operation;
             })
-            .ProducesProblem(StatusCodes.Status500InternalServerError);
+            .ProducesProblem(StatusCodes.Status500InternalServerError)
+            .ProducesProblem(StatusCodes.Status401Unauthorized);
     }
 
     private static void DeleteBooks(RouteGroupBuilder builder)
@@ -161,7 +165,8 @@ public static class BooksEndPoints
                 operation.Description = "This endpoint delete a specific book item requested by id.";
                 return operation;
             })
-            .ProducesProblem(StatusCodes.Status404NotFound);
+            .ProducesProblem(StatusCodes.Status404NotFound)
+            .ProducesProblem(StatusCodes.Status401Unauthorized);
     }
 
     private static void InsertSampleBooks(RouteGroupBuilder builder)
@@ -200,6 +205,7 @@ public static class BooksEndPoints
                 operation.Description = "This endpoint insert 100 sample book items for testing.";
                 return operation;
             })
-            .ProducesProblem(StatusCodes.Status500InternalServerError);
+            .ProducesProblem(StatusCodes.Status500InternalServerError)
+            .ProducesProblem(StatusCodes.Status401Unauthorized);
     }
 }

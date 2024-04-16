@@ -44,9 +44,8 @@ namespace devshop.api.Configs.dependencies
             services.AddScoped<IFileHandlerService, FileHandlerService>();
 
             services.AddScoped<IUserManagerAdapter, UserManagerAdapter>();
-            services.AddScoped<IUserManagerService, UserManagerService>();
             services.AddScoped<ISigninManagerAdapter, SigninManagerAdapter>();
-            services.AddScoped<ISigninManagerService, SigninManagerService>();
+            services.AddScoped<IAuthService, AuthService>();
 
             services.AddScoped<BooksRequestHandler>();
         }
