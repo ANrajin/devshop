@@ -22,7 +22,8 @@ public static class AuthEndPoints
 
             return Results.Ok();
         }).WithTags("Auth")
-        .ProducesProblem(StatusCodes.Status400BadRequest);
+        .ProducesProblem(StatusCodes.Status400BadRequest)
+        .RequireRateLimiting("fixed");
         
         app.MapPost("signup", async (
             IAuthService authService, 
@@ -35,6 +36,8 @@ public static class AuthEndPoints
             await authService.SetTokensInsideCookie(httpContext, authResponse);
 
             return Results.Ok();
-        }).WithTags("Auth");
+        }).WithTags("Auth")
+        .ProducesProblem(StatusCodes.Status400BadRequest)
+        .RequireRateLimiting("fixed");
     }
 }

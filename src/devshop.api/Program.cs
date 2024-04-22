@@ -45,6 +45,7 @@ try
     }
 
     //Register Framework Middlewares
+    app.UseRateLimiter();
     app.UseHttpsRedirection();
     app.UseCors(corsName);
     app.UseAuthentication();
@@ -56,7 +57,8 @@ try
 
     app.MapGroup("/books")
         .MapBooksApi()
-        .WithTags("Books");
+        .WithTags("Books")
+        .RequireRateLimiting("fixed");
 
     app.MapGroup("/courses")
         .MapCoursesEndPoint()
