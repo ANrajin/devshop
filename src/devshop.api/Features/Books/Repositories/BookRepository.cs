@@ -12,10 +12,10 @@ public class BookRepository(IApplicationDbContext dbContext) : IBookRepository
         CancellationToken cancellationToken=default)
     {
         if (shouldTrack)
-            return await _dbSet.AsNoTracking()
+            return await _dbSet.TagWith("Select All Books").AsNoTracking()
                 .ToListAsync(cancellationToken: cancellationToken);
         
-        return await _dbSet
+        return await _dbSet.TagWith("Select All Books")
             .ToListAsync(cancellationToken: cancellationToken);
     }
 
