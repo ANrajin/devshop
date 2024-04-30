@@ -27,7 +27,7 @@ public class BookRepository(IApplicationDbContext dbContext) : IBookRepository
     public async Task InsertAsync(Book book,
         CancellationToken cancellationToken = default)
     {
-        await _dbSet.AddAsync(book);
+        await _dbSet.AddAsync(book, cancellationToken);
     }
 
     public async Task InsertRangeAsync(IEnumerable<Book> books, 
@@ -46,6 +46,6 @@ public class BookRepository(IApplicationDbContext dbContext) : IBookRepository
                 _dbSet.Attach(book);
             }
             _dbSet.Remove(book);
-        });
+        }, cancellationToken);
     }
 }
