@@ -31,7 +31,8 @@ namespace devshop.api.Configs.dependencies
                 var entityInterceptor = sp.GetService<EntityInterceptor>()!;
 
                 options.UseSqlServer(connectionString)
-                    .AddInterceptors(entityInterceptor);
+                    .AddInterceptors(entityInterceptor)
+                    .LogTo(Console.WriteLine, LogLevel.Information);
             });
 
             services.AddEndpointsApiExplorer();
