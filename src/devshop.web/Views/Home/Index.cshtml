@@ -16,9 +16,25 @@
                 url: 'https://localhost:7238/courses/upload',
             }
         });
+
+
+        async function ServerConnection() {
+            const eventSource = new EventSource("http://localhost:5220/counts");
+
+            eventSource.onmessage = (event) => {
+                document.getElementById("counter").innerText = event.data.replace(/(\r\n|\n|\r)/gm, "");
+            }
+        }
+
+        ServerConnection();
     </script>
 }
 
 <div class="text-center">
     <input type="file" class="filepond" name="filepond"/>
 </div>
+
+<div>
+    <p>The counter is updating by Server-Sent Events: <span id="counter"></span></p>
+</div>
+

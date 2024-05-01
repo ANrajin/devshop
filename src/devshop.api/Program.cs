@@ -3,6 +3,7 @@ using devshop.api.Cores.Contracts;
 using devshop.api.Features.Auths;
 using devshop.api.Features.Books;
 using devshop.api.Features.Courses;
+using devshop.api.Features.Timer;
 using Serilog;
 using Serilog.Events;
 
@@ -63,6 +64,8 @@ try
     app.MapGroup("/courses")
         .MapCoursesEndPoint()
         .WithTags("Courses");
+
+    app.MapTimerEndPoints();
 
     app.Run();
 }

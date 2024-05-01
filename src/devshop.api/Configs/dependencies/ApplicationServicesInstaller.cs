@@ -8,6 +8,7 @@ using devshop.api.Features.Auths.Services;
 using devshop.api.Features.Books.Repositories;
 using devshop.api.Features.Books.Requests;
 using devshop.api.Features.Books.Services;
+using devshop.api.Features.Timer.Services;
 using devshop.api.Interceptors;
 using Microsoft.EntityFrameworkCore;
 
@@ -47,6 +48,8 @@ namespace devshop.api.Configs.dependencies
             services.AddScoped<IUserManagerAdapter, UserManagerAdapter>();
             services.AddScoped<ISigninManagerAdapter, SigninManagerAdapter>();
             services.AddScoped<IAuthService, AuthService>();
+
+            services.AddScoped<ICounterService, CounterService>();
 
             services.AddScoped<BooksRequestHandler>();
         }
