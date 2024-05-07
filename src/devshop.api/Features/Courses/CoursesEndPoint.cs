@@ -15,7 +15,7 @@ namespace devshop.api.Features.Courses
 
         private static void Upload(RouteGroupBuilder builder)
         {
-            builder.MapPost("/upload", async Task<Results<Ok<string>, ProblemHttpResult>>
+            builder.MapPost("/upload", Results<Ok<string>, ProblemHttpResult>
                 (IFileHandlerService fileHandlerService) =>
             {
                 var directoryName = fileHandlerService.PrepareTmpDir();

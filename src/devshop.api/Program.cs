@@ -69,9 +69,9 @@ try
 
     app.Run();
 }
-catch(Exception ex)
+catch(Exception ex) when (ex is not HostAbortedException && ex.Source != "Microsoft.EntityFrameworkCore.Design")
 {
-    Log.Error("The following {Exception} was thrown during application startup", ex);
+    Log.Error("The following \n {Exception} \n was thrown during application startup", ex);
 }
 finally
 {

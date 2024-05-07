@@ -31,7 +31,7 @@ namespace devshop.api.Configs.dependencies
             {
                 var entityInterceptor = sp.GetService<EntityInterceptor>()!;
 
-                options.UseSqlServer(connectionString)
+                options.UseNpgsql(connectionString)
                     .AddInterceptors(entityInterceptor)
                     .LogTo(Console.WriteLine, LogLevel.Information);
             });
