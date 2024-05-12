@@ -56,7 +56,7 @@ public static class BooksEndPoints
         {
             try
             {
-                var data = await booksService.GetBooks(id);
+                var data = await booksService.GetBook(id);
 
                 return data is not null 
                     ? TypedResults.Ok(data) 

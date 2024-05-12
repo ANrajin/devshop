@@ -30,6 +30,7 @@
     <ItemGroup>
       <Folder Include="assets\tmp\" />
       <Folder Include="assets\videos\" />
+      <Folder Include="Logs\" />
       <Folder Include="Migrations\" />
     </ItemGroup>
 

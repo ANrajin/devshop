@@ -16,8 +16,13 @@ public sealed class BooksService(
         return mapper.Map<IReadOnlyCollection<BooksResponse>>(books);
     }
 
-    public async Task<BooksResponse> GetBooks(Guid id)
+    public async Task<BooksResponse> GetBook(Guid id)
     {
+        if(id == Guid.Empty)
+        {
+            throw new ArgumentException("The book id is invalid.");
+        }
+
         var book = await unitOfWorks.BookRepository.GetByIdAsync(id)
                    ?? throw new ArgumentException("The requested resource was not found!");
 
@@ -26,6 +31,8 @@ public sealed class BooksService(
 
     public async Task InsertBooksAsync(BooksCreateRequest bookCreate)
     {
+        ArgumentNullException.ThrowIfNull(bookCreate);
+
         var books = mapper.Map<Book>(bookCreate);
 
         await unitOfWorks.BookRepository.InsertAsync(books);
@@ -35,6 +42,13 @@ public sealed class BooksService(
     public async Task InsertBooksAsync(IEnumerable<Book> books, 
         CancellationToken cancellationToken = default)
     {
+        ArgumentNullException.ThrowIfNull(books);
+
+        if(!books.Any())
+        {
+            throw new ArgumentException("The books list cannot be empty.");
+        }
+
         await unitOfWorks.BookRepository.InsertRangeAsync(books, cancellationToken);
         await unitOfWorks.SaveAsync(cancellationToken);
     }

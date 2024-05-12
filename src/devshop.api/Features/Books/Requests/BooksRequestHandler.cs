@@ -11,7 +11,7 @@ public sealed class BooksRequestHandler(IBooksService booksService)
     
     public async Task<BooksResponse> Books(Guid id)
     {
-        return await booksService.GetBooks(id);
+        return await booksService.GetBook(id);
     }
     
     public async Task InsertAsync(BooksCreateRequest request)

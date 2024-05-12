@@ -6,7 +6,7 @@ public interface IBooksService
 {
     public Task<IReadOnlyCollection<BooksResponse>> GetAllBooks();
     
-    Task<BooksResponse> GetBooks(Guid id);
+    Task<BooksResponse> GetBook(Guid id);
 
     public Task InsertBooksAsync(BooksCreateRequest bookCreate);
 
