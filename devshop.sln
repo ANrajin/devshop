@@ -11,7 +11,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "devshop.web", "src\devshop.
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{B673F9CE-F9FF-4F46-B00E-731E356B2548}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "devshop.api.tests", "tests\devshop.api.tests\devshop.api.tests.csproj", "{5554B2FE-E133-451F-9469-C79F90C44A8A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "devshop.api.tests", "tests\devshop.api.tests\devshop.api.tests.csproj", "{5554B2FE-E133-451F-9469-C79F90C44A8A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{1B8D4293-0C45-4959-ADDA-D1DC6BC1E323}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
