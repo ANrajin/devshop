@@ -1,4 +1,5 @@
 using devshop.api.Configs;
+using devshop.api.Configs.middlewares;
 using devshop.api.Cores.Contracts;
 using devshop.api.Features.Auths;
 using devshop.api.Features.Books;
@@ -33,6 +34,9 @@ try
     // Configure the HTTP request pipeline.
     if (app.Environment.IsDevelopment())
     {
+        //Enable this only for loggin HTTP request headers
+        //app.UseLogHeaders();
+
         app.UseSwagger(options =>
         {
             options.RouteTemplate = "swagger/{documentName}/swagger.json";
