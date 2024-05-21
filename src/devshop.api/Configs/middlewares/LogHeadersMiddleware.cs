@@ -4,7 +4,7 @@ public class LogHeadersMiddleware(RequestDelegate next,
     ILogger<LogHeadersMiddleware> logger)
 {
     private readonly RequestDelegate _next = next;
-    private ILogger<LogHeadersMiddleware> _logger = logger;
+    private readonly ILogger<LogHeadersMiddleware> _logger = logger;
 
     public async Task InvokeAsync(HttpContext context)
     {
