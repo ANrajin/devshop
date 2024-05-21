@@ -1,7 +1,7 @@
-﻿using devshop.api.Auths.Entities;
-using devshop.api.Contexts;
+﻿using devshop.api.Contexts;
 using devshop.api.Cores.Adapters;
 using devshop.api.Cores.Contracts;
+using devshop.api.Features.Auths.Entities;
 using devshop.api.Features.Auths.JWT;
 using devshop.api.Features.Auths.Securities;
 using Microsoft.AspNetCore.Authentication.JwtBearer;

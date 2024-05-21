@@ -1,4 +1,4 @@
-﻿namespace devshop.api.Configs.middlewares;
+﻿namespace devshop.api.Configs.Middlewares;
 
 public class LogHeadersMiddleware(RequestDelegate next,
     ILogger<LogHeadersMiddleware> logger)

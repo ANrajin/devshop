@@ -1,5 +1,5 @@
 using System.Security.Claims;
-using devshop.api.Auths.Entities;
+using devshop.api.Features.Auths.Entities;
 using Microsoft.AspNetCore.Identity;
 
 namespace devshop.api.Cores.Adapters;

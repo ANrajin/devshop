@@ -1,5 +1,4 @@
 using devshop.api.Configs;
-using devshop.api.Configs.middlewares;
 using devshop.api.Cores.Contracts;
 using devshop.api.Features.Auths;
 using devshop.api.Features.Books;

@@ -1,5 +1,5 @@
-using devshop.api.Auths.Entities;
 using devshop.api.Cores.Adapters;
+using devshop.api.Features.Auths.Entities;
 using devshop.api.Features.Auths.JWT;
 using devshop.api.Features.Auths.Requests;
 using devshop.api.Features.Auths.Responses;

@@ -1,4 +1,4 @@
-using devshop.api.Auths.Entities;
+using devshop.api.Features.Auths.Entities;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
