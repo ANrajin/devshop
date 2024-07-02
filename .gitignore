@@ -484,3 +484,4 @@ $RECYCLE.BIN/
 *.swp
 **/tmp/**
 **/videos/**
+appsettings.Development.json
